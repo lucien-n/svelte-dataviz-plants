@@ -13,9 +13,11 @@
 </script>
 
 <main>
-	{#await getPlants() then plants}
-		{#each plants.data as plant}
-			<PlantCard data={plant} />
-		{/each}
-	{/await}
+	<section id="plants-cards">
+		{#await getPlants() then plants}
+			{#each plants.data as plant}
+				<PlantCard data={plant} />
+			{/each}
+		{/await}
+	</section>
 </main>
