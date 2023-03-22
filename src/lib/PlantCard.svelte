@@ -6,9 +6,3 @@
 	<p>Common Name: {data.common_name}</p>
 	<p>Scientific Name: {data.scientific_name}</p>
 </section>
-
-<style scoped>
-	section {
-		border: 2px solid black;
-	}
-</style>
