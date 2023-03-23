@@ -1,15 +1,20 @@
 <script>
 	import './app.css';
-
-	import PlantCard from './lib/PlantCard.svelte';
 	import { plants } from './data';
+	import PlantCard from './lib/PlantCardSmall.svelte';
+	import PlantModal from './lib/PlantModal.svelte';
+
+	let plantModalVisible = false;
+	let plantModalData = {};
 
 	async function getPlants() {
-		// const data = await fetch(
-		// 	'https://perenual.com/api/species-list?page=1&key=sk-pHQb641c2838df533292'
-		// );
-		// const plants = await data.json();
 		return plants;
+	}
+
+	function showPlantModal(e) {
+		console.log('Show modal for: ', e.detail.data.common_name);
+		plantModalData = e.detail.data;
+		plantModalVisible = true;
 	}
 </script>
 
@@ -20,14 +25,14 @@
 	>
 		{#await getPlants() then plants}
 			{#each plants.data as plant}
-				<PlantCard data={plant} />
+				<PlantCard data={plant} on:card-click={showPlantModal} />
 			{/each}
 		{/await}
 	</section>
+	{#if plantModalVisible}
+		<PlantModal
+			data={plantModalData}
+			on:close-modal={() => (plantModalVisible = false)}
+		/>
+	{/if}
 </main>
-
-<style>
-	main {
-		background-color: #e9f0e2;
-	}
-</style>
