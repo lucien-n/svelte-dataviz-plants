@@ -12,27 +12,46 @@
 	}
 
 	function showPlantModal(e) {
-		console.log('Show modal for: ', e.detail.data.common_name);
 		plantModalData = e.detail.data;
 		plantModalVisible = true;
 	}
 </script>
 
-<main class="w-full h-full">
-	<section
-		id="plants-cards"
-		class="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 w-full md:w-3/5 mx-auto"
-	>
-		{#await getPlants() then plants}
-			{#each plants.data as plant}
-				<PlantCard data={plant} on:card-click={showPlantModal} />
-			{/each}
-		{/await}
-	</section>
-	{#if plantModalVisible}
-		<PlantModal
-			data={plantModalData}
-			on:close-modal={() => (plantModalVisible = false)}
-		/>
-	{/if}
+<main>
+	<div class="container">
+		<section id="plants-cards">
+			{#await getPlants() then plants}
+				{#each plants.data as plant}
+					<PlantCard data={plant} on:card-click={showPlantModal} />
+				{/each}
+			{/await}
+		</section>
+		{#if plantModalVisible}
+			<PlantModal
+				data={plantModalData}
+				on:close-modal={() => (plantModalVisible = false)}
+			/>
+		{/if}
+	</div>
 </main>
+
+<style>
+	main {
+		width: 100%;
+		height: 100%;
+	}
+	.container {
+		width: 70%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	section#plants-cards {
+		display: grid;
+		gap: 0.75rem;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>

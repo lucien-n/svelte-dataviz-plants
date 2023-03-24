@@ -5,33 +5,67 @@
 
 	export let data;
 
-	let image_url =
+	data.image =
 		data.default_image && data.default_image.original_url != null
 			? data.default_image.original_url
 			: 'images/plant_placeholder.png';
 
-	// So we don't have to redo this ↑ in PlantModal.svelte
-	data.image = image_url;
+	function click() {
+		disptach('card-click', { data: data });
+	}
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <section
 	id="card-plant-{data.common_name}"
-	class="bg-white border-zinc-500 border rounded-md h-full hover:cursor-pointer shadow-md transition ease-in-out duration-300 hover:shadow-2xl hover:border-zinc-00"
-	on:click={() => disptach('card-click', { data: data })}
+	class="plant-card"
+	on:click={click}
+	on:keypress={(event) => {
+		if (event.key === 'Enter') click();
+	}}
 >
-	<div class="h-2/3 overflow-hidden rounded-t-md shadow-lg">
-		<img
-			src={data.image}
-			alt=""
-			class="w-full h-full self-center hover:cursor-pointer"
-			style="object-fit: cover;"
-		/>
+	<div class="plant-image">
+		<img src={data.image} alt="plant" />
 	</div>
-	<div class="p-2">
-		<p class="font-semibold text-md">{data.common_name}</p>
-		<p class="italic text-zinc-500">
+	<div class="plant-description">
+		<p class="common_name">{data.common_name}</p>
+		<p class="scientific_name">
 			{data.scientific_name}
 		</p>
 	</div>
 </section>
+
+<style scoped>
+	.plant-card {
+		height: 100%;
+		border: 2px solid gray;
+	}
+
+	.plant-card:hover {
+		cursor: pointer;
+	}
+
+	.plant-image {
+		height: 66.667%;
+		overflow: hidden;
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		align-self: center;
+	}
+
+	.plant-description {
+		padding: 0.5rem;
+	}
+
+	.common_name {
+		font-weight: 600;
+	}
+
+	.scientific_name {
+		font-style: italic;
+		color: rgb(110, 110, 110);
+	}
+</style>
