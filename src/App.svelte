@@ -3,7 +3,7 @@
 
 	async function getPlant() {
 		const data = await fetch(
-			'https://perenual.com/api/species-list?page=1&key=sk-9lep6419bee20788e274'
+			'https://perenual.com/api/species-list?page=1&key=sk-jxea641c2a2474900306'
 		);
 		const response = await data.json();
 		return response;
