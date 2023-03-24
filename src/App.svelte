@@ -3,6 +3,7 @@
 	import { plants } from './data';
 	import PlantCard from './lib/PlantCardSmall.svelte';
 	import PlantModal from './lib/PlantModal.svelte';
+	import Carrousel from './lib/Carrousel.svelte';
 
 	let plantModalVisible = false;
 	let plantModalData = {};
@@ -19,6 +20,9 @@
 
 <main>
 	<div class="container">
+		<div>
+			<Carrousel />
+		</div>
 		<section id="plants-cards">
 			{#await getPlants() then plants}
 				{#each plants.data as plant}
