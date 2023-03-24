@@ -1,22 +1,57 @@
 <script>
-	import PlantCard from './lib/PlantCard.svelte';
+	import './app.css';
+	import { plants } from './data';
+	import PlantCard from './lib/PlantCardSmall.svelte';
+	import PlantModal from './lib/PlantModal.svelte';
 
-	async function getPlant() {
-		const data = await fetch(
-			'https://perenual.com/api/species-list?page=1&key=sk-9lep6419bee20788e274'
-		);
-		const response = await data.json();
-		return response;
+	let plantModalVisible = false;
+	let plantModalData = {};
+
+	async function getPlants() {
+		return plants;
+	}
+
+	function showPlantModal(e) {
+		plantModalData = e.detail.data;
+		plantModalVisible = true;
 	}
 </script>
 
 <main>
-	<!-- {#each plants as plant}
-		<PlantCard name={plant.name} type={plant.type} />
-	{/each} -->
-	{#await getPlant() then response}
-		{#each response.data as plant}
-			<PlantCard data={plant} />
-		{/each}
-	{/await}
+	<div class="container">
+		<section id="plants-cards">
+			{#await getPlants() then plants}
+				{#each plants.data as plant}
+					<PlantCard data={plant} on:card-click={showPlantModal} />
+				{/each}
+			{/await}
+		</section>
+		{#if plantModalVisible}
+			<PlantModal
+				data={plantModalData}
+				on:close-modal={() => (plantModalVisible = false)}
+			/>
+		{/if}
+	</div>
 </main>
+
+<style>
+	main {
+		width: 100%;
+		height: 100%;
+	}
+	.container {
+		width: 70%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	section#plants-cards {
+		display: grid;
+		gap: 0.75rem;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
