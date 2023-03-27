@@ -1,12 +1,22 @@
 <script>
-	import { listen_dev } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte/internal';
+
+	const dispatch = createEventDispatcher();
 
 	let tab = [];
 	let flecheG;
 	let flecheD;
 	let slide;
 	let indice_element_active = 1;
+
+	let categories = [
+		{ name: 'full_sun', image: 'images/sun.png' },
+		{ name: 'undefined', image: 'images/nuage.png' },
+		{ name: 'undefined', image: 'images/nuage.png' },
+		{ name: 'undefined', image: 'images/arrosoir.png' },
+		{ name: 'undefined', image: 'images/sun.png' },
+		{ name: 'undefined', image: 'images/sun.png' },
+	];
 
 	function augmenter(variable) {
 		variable.style = 'z-index:2;transform:scale(1.2);width:calc(2*100%);';
@@ -36,6 +46,10 @@
 			indice_element_active = indice_element_active + 1;
 		}
 	}
+
+	function changeCategory(category) {
+		dispatch('change-category', { category: category });
+	}
 </script>
 
 <section id="carrousel">
@@ -48,65 +62,35 @@
 			id="img_svg1"
 			bind:this={flecheG}
 			on:click={flecheGScale}
+			on:keypress={(e) => {
+				if (e.key === 'Enter') flecheGScale();
+			}}
 		/>
 		<div class="slide" bind:this={slide}>
 			<div class="card cardX" bind:this={tab[0]} />
-			<div
-				class="card card1"
-				bind:this={tab[1]}
-				on:click={() => {
-					createEventDispatcher('choix-categorie', {
-						categorie: 'full_sun',
-					});
-				}}
-			>
-				<img src="./images/sun.png" alt="" class="img_categorie" />
-			</div>
-			<div
-				class="card card2"
-				bind:this={tab[2]}
-				on:click={() => {
-					createEventDispatcher('choix-categorie', { categorie: '' });
-				}}
-			>
-				<img src="./images/nuage.png" alt="" class="img_categorie" />
-			</div>
-			<div
-				class="card card3"
-				bind:this={tab[3]}
-				on:click={() => {
-					createEventDispatcher('choix-categorie', { categorie: '' });
-				}}
-			>
-				<img src="./images/arrosoir.png" alt="" class="img_categorie" />
-			</div>
-			<div
-				class="card card4"
-				bind:this={tab[4]}
-				on:click={() => {
-					createEventDispatcher('choix-categorie', { categorie: '' });
-				}}
-			>
-				<img src="./images/sun.png" alt="" class="img_categorie" />
-			</div>
-			<div
-				class="card card5"
-				bind:this={tab[5]}
-				on:click={() => {
-					createEventDispatcher('choix-categorie', { categorie: '' });
-				}}
-			>
-				<img src="./images/sun.png" alt="" class="img_categorie" />
-			</div>
+			{#each categories as category, index}
+				<div
+					class="card card-{index + 1}"
+					bind:this={tab[index + 1]}
+					on:click={() => changeCategory(category.name)}
+					on:keypress={(e) => {
+						if (e.key === 'Enter') changeCategory(category.name);
+					}}
+				>
+					<img src={category.image} alt="" class="img_categorie" />
+				</div>
+			{/each}
 			<div class="card cardX" bind:this={tab[6]} />
 		</div>
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<img
 			src="images/fleche_droite.svg"
 			alt=""
 			class="img_svg"
 			bind:this={flecheD}
 			on:click={flecheDScale}
+			on:keypress={(e) => {
+				if (e.key === 'Enter') flecheDScale();
+			}}
 		/>
 	</div>
 </section>
