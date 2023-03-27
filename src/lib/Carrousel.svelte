@@ -10,12 +10,14 @@
 	let indice_element_active = 1;
 
 	let categories = [
-		{ name: 'full_sun', image: 'images/sun.png' },
-		{ name: 'undefined', image: 'images/nuage.png' },
-		{ name: 'undefined', image: 'images/nuage.png' },
-		{ name: 'undefined', image: 'images/arrosoir.png' },
-		{ name: 'undefined', image: 'images/sun.png' },
-		{ name: 'undefined', image: 'images/sun.png' },
+		{ name: 'sunlight:full_sun', image: 'images/sun.png' },
+		{ name: 'sunlight:sun-part_shade', image: 'images/sun.png' },
+		{ name: 'sunlight:part_shade', image: 'images/sun.png' },
+		{ name: 'sunlight:full_shade', image: 'images/sun.png' },
+		{ name: 'watering:frequent', image: 'images/arrosoir.png' },
+		{ name: 'watering:average', image: 'images/arrosoir.png' },
+		{ name: 'watering:minimum', image: 'images/arrosoir.png' },
+		{ name: 'watering:none', image: 'images/arrosoir.png' },
 	];
 
 	function augmenter(variable) {
@@ -39,7 +41,7 @@
 		}
 	}
 	function flecheDScale() {
-		if (indice_element_active != 5) {
+		if (indice_element_active != categories.length) {
 			diminuer(tab[indice_element_active]);
 			augmenter(tab[indice_element_active + 1]);
 			slide.scrollBy(210, 0);
@@ -73,14 +75,18 @@
 					class="card card-{index + 1}"
 					bind:this={tab[index + 1]}
 					on:click={() => changeCategory(category.name)}
-					on:keypress={(e) => {
-						if (e.key === 'Enter') changeCategory(category.name);
+					on:keypress={(event) => {
+						if (event.key === 'Enter')
+							changeCategory(category.name);
 					}}
 				>
 					<img src={category.image} alt="" class="img_categorie" />
+					<h1>{category.name.split(':')[1]}</h1>
 				</div>
+				{#if index == categories.length - 1}
+					<div class="card cardX" bind:this={tab[index + 2]} />
+				{/if}
 			{/each}
-			<div class="card cardX" bind:this={tab[6]} />
 		</div>
 		<img
 			src="images/fleche_droite.svg"
