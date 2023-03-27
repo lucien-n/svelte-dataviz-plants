@@ -3,9 +3,15 @@
 	import { plants } from './data';
 	import PlantCard from './lib/PlantCardSmall.svelte';
 	import PlantModal from './lib/PlantModal.svelte';
+	import Carrousel from './lib/Carrousel.svelte';
+	import { writable } from 'svelte/store';
 
 	let plantModalVisible = false;
 	let plantModalData = {};
+
+	const category = writable('');
+
+	let get_plants = getPlants();
 
 	async function getPlants() {
 		return plants;
@@ -15,12 +21,22 @@
 		plantModalData = e.detail.data;
 		plantModalVisible = true;
 	}
+
+	const _ = category.subscribe((_) => {
+		get_plants = getPlants();
+	});
 </script>
 
 <main>
 	<div class="container">
+		<div>
+			<Carrousel
+				on:change-category={(event) =>
+					category.set(event.detail.category)}
+			/>
+		</div>
 		<section id="plants-cards">
-			{#await getPlants() then plants}
+			{#await get_plants then plants}
 				{#each plants.data as plant}
 					<PlantCard data={plant} on:card-click={showPlantModal} />
 				{/each}

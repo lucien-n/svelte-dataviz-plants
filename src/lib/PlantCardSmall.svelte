@@ -36,8 +36,11 @@
 
 <style scoped>
 	.plant-card {
+		font-size: large;
 		height: 100%;
-		border: 2px solid gray;
+		border-radius: 0.75rem;
+		background-color: white;
+		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 	}
 
 	.plant-card:hover {
@@ -45,8 +48,9 @@
 	}
 
 	.plant-image {
-		height: 66.667%;
+		height: 80%;
 		overflow: hidden;
+		border-radius: 0.5rem;
 	}
 
 	img {
@@ -62,10 +66,13 @@
 
 	.common_name {
 		font-weight: 600;
+		color: #45542c;
+		font-weight: bolder;
 	}
 
 	.scientific_name {
 		font-style: italic;
 		color: rgb(110, 110, 110);
+		color: rgba(59, 167, 47, 0.815);
 	}
 </style>
